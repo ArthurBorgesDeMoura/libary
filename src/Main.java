@@ -1,17 +1,14 @@
 public class Main {
     public static void main(String[] args) {
-        Biblioteca b = new Biblioteca();
-        b.adicionarLivro("O Senhor dos Anéis", "J. R. R. Tolkien", 1954);
-        b.adicionarLivro("Refatoração", "Martin Fowler", 2020);
+        Biblioteca biblioteca = new Biblioteca();
+        biblioteca.adicionarLivro("O Senhor dos Anéis", "J. R. R. Tolkien", 1954);
+        biblioteca.adicionarLivro("Refatoração", "Martin Fowler", 2020);
 
-        Usuario u = new Usuario();
-        u.nome = "Maria";
-        u.idade = 21;
-        u.email = "maria@gmail.com";
+        Usuario usuario = new Usuario("Maria", 21, "maria@gmail.com");
 
-        b.realizarEmprestimo(u, "O Senhor dos Anéis");
-        b.realizarEmprestimo(u, "Refatoração");
+        biblioteca.realizarEmprestimo(usuario, "O Senhor dos Anéis");
+        biblioteca.realizarEmprestimo(usuario, "Refatoração");
 
-        b.listarEmprestimos();
+        biblioteca.listarEmprestimos();
     }
 }

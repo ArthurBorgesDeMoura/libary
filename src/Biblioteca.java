@@ -5,41 +5,34 @@ public class Biblioteca {
     public ArrayList<Emprestimo> emprestimos = new ArrayList<>();
 
     public void adicionarLivro(String titulo, String autor, int ano) {
-        Livro l = new Livro();
-        l.titulo = titulo;
-        l.autor = autor;
-        l.ano = ano;
-        l.disponivel = true;
-        livros.add(l);
+        Livro livro = new Livro(titulo, autor, ano, true);
+        livros.add(livro);
 
     }
 
-    public void realizarEmprestimo(Usuario u, String tituloLivro) {
-        for (Livro l : livros) {
-            if (l.titulo.equals(tituloLivro) && l.disponivel) {
-                Emprestimo e = new Emprestimo();
-                e.usuario = u;
-                e.livro = l;
-                e.data = "10/09/2025";
-                emprestimos.add(e);
-                l.disponivel = false;
-                System.out.println("Emprestimo realizado: " + u.nome + " pegou " + l.titulo);
-                return;
-            }
+    public void realizarEmprestimo(Usuario usuario, String tituloLivro) {
+        Livro livroDisponivel = consultaLivroDisponivel(tituloLivro);
+        if (livroDisponivel != null) {
+            Emprestimo emprestimo = new Emprestimo(usuario, livroDisponivel, "10/09/2025");
+            emprestimos.add(emprestimo);
+            livroDisponivel.setDisponivel(false);
+            System.out.println("Emprestimo realizado: " + usuario.getNome() + " pegou " + livroDisponivel.getTitulo());
+            return;
         }
         System.out.println("Livro não disponivel.");
     }
 
-    public void listarEmprestimos() {
-        for (Emprestimo e : emprestimos) {
-            System.out.println("Usuário: " + e.usuario.nome + " - Livro: " + e.livro.titulo + " - Data: " + e.data);
-
-        }
+    private Livro consultaLivroDisponivel(String tituloLivro) {
+        return livros.stream()
+                .filter(livro -> livro.getTitulo().equals(tituloLivro) && livro.isDisponivel())
+                .findFirst()
+                .orElse(null);
     }
 
-    public void relatorioLivros() {
-        for (Livro l : livros) {
-            System.out.println(l.titulo + " - " + l.autor + " (" + l.ano + ")");
+    public void listarEmprestimos() {
+        for (Emprestimo emprestimo : emprestimos) {
+            System.out.println("Usuário: " + emprestimo.getUsuario().getNome() + " - Livro: " + emprestimo.getLivro().getTitulo() + " - Data: " + emprestimo.getData());
+
         }
     }
 
